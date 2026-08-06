@@ -44,7 +44,7 @@ pub fn request_prediction(
         .unwrap_or_else(|| "untitled".into())
         .into();
 
-    let http_client = cx.http_client();
+    let http_client = ::http_client::http_client(cx);
     let cursor_point = position.to_point(&snapshot);
     let request_start = cx.background_executor().now();
 

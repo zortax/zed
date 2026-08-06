@@ -138,7 +138,7 @@ impl RemoteRunningKernel {
             token: kernelspec.token,
         };
 
-        let http_client = cx.http_client();
+        let http_client = ::http_client::http_client(cx);
 
         window.spawn(cx, async move |cx| {
             let kernel_id = launch_remote_kernel(

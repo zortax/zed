@@ -975,7 +975,7 @@ async fn test_remote_context_server(cx: &mut TestAppContext) {
             .unwrap();
         Ok(response)
     });
-    cx.update(|cx| cx.set_http_client(client));
+    cx.update(|cx| ::http_client::set_http_client(cx, client));
 
     let (_fs, project) = setup_context_server_test(cx, json!({ "code.rs": "" }), vec![]).await;
 
@@ -1383,7 +1383,7 @@ fn set_fake_mcp_http_client(
             respond_to_mcp_message(&message)
         }
     });
-    cx.update(|cx| cx.set_http_client(client));
+    cx.update(|cx| ::http_client::set_http_client(cx, client));
 }
 
 fn json_response(body: serde_json::Value) -> Response<http_client::AsyncBody> {

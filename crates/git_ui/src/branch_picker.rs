@@ -5,7 +5,7 @@ use fuzzy_nucleo::StringMatchCandidate;
 use collections::{HashMap, HashSet};
 use git::repository::{Branch, delete_branch_flag};
 use git::{GitHostingProviderRegistry, parse_git_remote_url};
-use gpui::http_client::Url;
+use http_client::Url;
 use gpui::{
     Action, App, Context, DismissEvent, Entity, EventEmitter, FocusHandle, Focusable, Global,
     InteractiveElement, IntoElement, Modifiers, ModifiersChangedEvent, ParentElement, PromptLevel,

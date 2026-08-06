@@ -72,7 +72,7 @@ pub(crate) fn request_prediction_with_zeta(
         _ => None,
     };
 
-    let http_client = cx.http_client();
+    let http_client = ::http_client::http_client(cx);
     let request_start = cx.background_executor().now();
     let raw_config = store.zeta2_raw_config().cloned();
     let preferred_experiment = store.preferred_experiment().map(|s| s.to_owned());

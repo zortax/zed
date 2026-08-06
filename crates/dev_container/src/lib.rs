@@ -110,7 +110,7 @@ impl DevContainerContext {
         let settings = DevContainerSettings::get_global(cx);
         let use_podman = settings.use_podman;
         let use_buildkit = settings.use_buildkit;
-        let http_client = cx.http_client().clone();
+        let http_client = ::http_client::http_client(cx).clone();
         let fs = workspace.app_state().fs.clone();
         let environment = workspace.project().read(cx).environment().downgrade();
         Some(Self {
@@ -1112,7 +1112,7 @@ impl StatefulModal for DevContainerModal {
         let new_state = match message {
             DevContainerMessage::SearchTemplates => {
                 cx.spawn_in(window, async move |this, cx| {
-                    let Ok(client) = cx.update(|_, cx| cx.http_client()) else {
+                    let Ok(client) = cx.update(|_, cx| ::http_client::http_client(cx)) else {
                         return;
                     };
                     match get_ghcr_templates(client).await {
@@ -1277,7 +1277,7 @@ impl StatefulModal for DevContainerModal {
             }
             DevContainerMessage::TemplateOptionsCompleted(template_entry) => {
                 cx.spawn_in(window, async move |this, cx| {
-                    let Ok(client) = cx.update(|_, cx| cx.http_client()) else {
+                    let Ok(client) = cx.update(|_, cx| ::http_client::http_client(cx)) else {
                         return;
                     };
                     let Some(features) = get_ghcr_features(client).await.log_err() else {

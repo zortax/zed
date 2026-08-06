@@ -2,7 +2,7 @@ use client::{Client, ProxySettings, RefreshLlmTokenListener, UserStore};
 use db::AppDatabase;
 use extension::ExtensionHostProxy;
 use fs::RealFs;
-use gpui::http_client::read_proxy_from_env;
+use http_client::read_proxy_from_env;
 use gpui::{App, AppContext, Entity};
 use gpui_tokio::Tokio;
 use language::LanguageRegistry;
@@ -57,10 +57,10 @@ pub fn init(cx: &mut App) -> EpAppState {
         ReqwestClient::proxy_and_user_agent(proxy_url, &user_agent)
             .expect("could not start HTTP client")
     };
-    cx.set_http_client(Arc::new(http));
+    ::http_client::set_http_client(cx, Arc::new(http));
 
     let client = Client::production(cx);
-    cx.set_http_client(client.http_client());
+    ::http_client::set_http_client(cx, client.http_client());
 
     let app_db = AppDatabase::new();
     cx.set_global(app_db);

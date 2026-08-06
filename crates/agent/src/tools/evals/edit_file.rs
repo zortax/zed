@@ -255,7 +255,7 @@ impl EditToolTest {
 
             gpui_tokio::init(cx);
             let http_client = Arc::new(ReqwestClient::user_agent("agent tests").unwrap());
-            cx.set_http_client(http_client);
+            ::http_client::set_http_client(cx, http_client);
             let client = Client::production(cx);
             let user_store = cx.new(|cx| UserStore::new(client.clone(), cx));
             language_model::init(cx);

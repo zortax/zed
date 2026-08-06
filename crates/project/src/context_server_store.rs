@@ -991,7 +991,7 @@ impl ContextServerStore {
                     None
                 } else {
                     let credentials_provider = cx.update(|cx| zed_credentials_provider::global(cx));
-                    let http_client = cx.update(|cx| cx.http_client());
+                    let http_client = cx.update(|cx| ::http_client::http_client(cx));
 
                     match Self::load_session(&credentials_provider, url, &cx).await {
                         Ok(Some(session)) => {
@@ -1027,7 +1027,7 @@ impl ContextServerStore {
                     oauth: _,
                 } => {
                     let transport = HttpTransport::new_with_token_provider(
-                        cx.http_client(),
+                        ::http_client::http_client(cx),
                         url.to_string(),
                         headers.clone(),
                         cx.background_executor().clone(),
@@ -1447,7 +1447,7 @@ impl ContextServerStore {
         let (redirect_uri, callback_rx) =
             oauth::start_callback_server().context("Failed to start OAuth callback server")?;
 
-        let http_client = cx.update(|cx| cx.http_client());
+        let http_client = cx.update(|cx| ::http_client::http_client(cx));
         let credentials_provider = cx.update(|cx| zed_credentials_provider::global(cx));
         let server_url = match configuration.as_ref() {
             ContextServerConfiguration::Http { url, .. } => url.clone(),
@@ -1984,7 +1984,7 @@ async fn resolve_auth_required(
         }
     };
 
-    let http_client = cx.update(|cx| cx.http_client());
+    let http_client = cx.update(|cx| ::http_client::http_client(cx));
 
     match context_server::oauth::discover(&http_client, &server_url, www_authenticate).await {
         Ok(discovery) => {

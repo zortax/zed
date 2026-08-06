@@ -1850,7 +1850,7 @@ pub mod evals {
         let prompt_builder = Arc::new(PromptBuilder::new(None).unwrap());
         let http = Arc::new(reqwest_client::ReqwestClient::user_agent("agent tests").unwrap());
         let client = cx.update(|cx| {
-            cx.set_http_client(http);
+            ::http_client::set_http_client(cx, http);
             Client::production(cx)
         });
         let mut inline_assistant = InlineAssistant::new(fs.clone(), prompt_builder);

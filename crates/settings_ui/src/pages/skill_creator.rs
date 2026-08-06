@@ -167,7 +167,7 @@ impl SkillCreatorPage {
         let app_state = workspace::AppState::global(cx);
         let fs = app_state.fs.clone();
         let language_registry = app_state.languages.clone();
-        let http_client = cx.http_client();
+        let http_client = ::http_client::http_client(cx);
 
         let focus_handle = cx.focus_handle();
 

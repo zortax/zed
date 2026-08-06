@@ -9,9 +9,9 @@ use anyhow::{Context as _, Result};
 use cloud_llm_client::EditPredictionRejectReason;
 use credentials_provider::CredentialsProvider;
 use futures::AsyncReadExt as _;
+use http_client::{AsyncBody, HttpClient, Method, StatusCode};
 use gpui::{
     App, AppContext as _, Context, Entity, Global, SharedString, Task, TaskExt,
-    http_client::{self, AsyncBody, HttpClient, Method, StatusCode},
 };
 use language::{ToOffset, ToPoint as _};
 use language_model::{ApiKeyState, EnvVar, env_var};
@@ -70,7 +70,7 @@ impl Mercury {
             .unwrap_or_else(|| "untitled".into())
             .into();
 
-        let http_client = cx.http_client();
+        let http_client = ::http_client::http_client(cx);
         let cursor_point = position.to_point(&snapshot);
         let request_start = cx.background_executor().now();
         let active_buffer = buffer.clone();

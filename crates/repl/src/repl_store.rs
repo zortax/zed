@@ -227,7 +227,7 @@ impl ReplStore {
                     base_url: server,
                     token,
                 };
-                let http_client = cx.http_client();
+                let http_client = ::http_client::http_client(cx);
                 Some(cx.spawn(async move |_, _| {
                     list_remote_kernelspecs(remote_server, http_client)
                         .await

@@ -4,7 +4,7 @@ use collections::HashMap;
 use dap::{DebugRequest, StartDebuggingRequestArguments, adapters::DebugTaskDefinition};
 use fs::RemoveOptions;
 use futures::{StreamExt, TryStreamExt};
-use gpui::http_client::AsyncBody;
+use http_client::AsyncBody;
 use gpui::{AsyncApp, SharedString};
 use json_dotpath::DotPaths;
 use language::{LanguageName, Toolchain};

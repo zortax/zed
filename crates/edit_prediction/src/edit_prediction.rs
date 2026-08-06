@@ -35,10 +35,10 @@ use futures::{
 use git::repository::FileHistoryChangedFileSets;
 use gpui::BackgroundExecutor;
 use gpui::TaskExt;
-use gpui::http_client::Url;
+use http_client::Url;
+use http_client::{AsyncBody, Method};
 use gpui::{
     App, AsyncApp, Context, Entity, EntityId, Global, SharedString, Task, WeakEntity, actions,
-    http_client::{self, AsyncBody, Method},
     prelude::*,
 };
 use heapless::Vec as ArrayVec;

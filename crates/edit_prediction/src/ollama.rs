@@ -1,8 +1,8 @@
 use anyhow::{Context as _, Result};
 use futures::AsyncReadExt as _;
+use http_client::{HttpClient};
 use gpui::{
     App, SharedString, TaskExt,
-    http_client::{self, HttpClient},
 };
 use language::language_settings::OpenAiCompatibleEditPredictionSettings;
 use language_model::{LanguageModelProviderId, LanguageModelRegistry};

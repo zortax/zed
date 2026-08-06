@@ -32,6 +32,7 @@ use git_ui::clone::clone_and_open;
 use gpui::{
     App, AppContext, Application, AsyncApp, QuitMode, Task, TaskExt, UpdateGlobal as _, block_on,
 };
+#[cfg(not(feature = "zgui"))]
 use gpui_platform;
 
 use gpui_tokio::Tokio;
@@ -84,12 +85,27 @@ use crate::zed::{CrashHandler, OpenRequestKind, eager_load_active_theme_and_icon
 static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
 fn build_application() -> Application {
-    let platform = gpui_platform::current_platform(false);
+    let platform = platform();
     if std::env::var("ZED_EXPERIMENTAL_A11Y").as_deref() == Ok("1") {
         Application::with_platform(platform)
     } else {
         Application::new_inaccessible(platform)
     }
+}
+
+/// The platform Zed draws through.
+///
+/// The `zgui` feature swaps gpui's own platform for one that puts a winit window in front of
+/// zgui's renderer, which composes into a target it keeps between frames and redraws only what
+/// changed. Everything above this line — the element tree, entities, windows — is unaffected.
+#[cfg(feature = "zgui")]
+fn platform() -> std::rc::Rc<dyn gpui::Platform> {
+    std::rc::Rc::new(gpui_zgui::ZguiPlatform::new())
+}
+
+#[cfg(not(feature = "zgui"))]
+fn platform() -> std::rc::Rc<dyn gpui::Platform> {
+    gpui_platform::current_platform(false)
 }
 
 fn files_not_created_on_launch(errors: HashMap<io::ErrorKind, Vec<&Path>>) {
@@ -511,7 +527,7 @@ fn main() {
             ReqwestClient::proxy_and_user_agent(proxy_url, &user_agent)
                 .expect("could not start HTTP client")
         };
-        cx.set_http_client(Arc::new(http));
+        ::http_client::set_http_client(cx, Arc::new(http));
 
         <dyn Fs>::set_global(fs.clone(), cx);
 
@@ -524,7 +540,7 @@ fn main() {
         let extension_host_proxy = ExtensionHostProxy::global(cx);
 
         let client = Client::production(cx);
-        cx.set_http_client(client.http_client());
+        ::http_client::set_http_client(cx, client.http_client());
         let mut languages = LanguageRegistry::new(cx.background_executor().clone());
         languages.set_language_server_download_dir(paths::languages_dir().clone());
         let languages = Arc::new(languages);

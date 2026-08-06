@@ -62,7 +62,7 @@ pub fn request_prediction(
     };
 
     let api_key = load_open_ai_compatible_api_key_if_needed(provider, cx);
-    let http_client = cx.http_client();
+    let http_client = ::http_client::http_client(cx);
     let buffer_snapshotted_at = Instant::now();
 
     let EditPredictionModelInput {

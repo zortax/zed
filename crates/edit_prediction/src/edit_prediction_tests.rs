@@ -23,9 +23,9 @@ use futures::{
     channel::{mpsc, oneshot},
 };
 use gpui::App;
+use http_client::{FakeHttpClient, Response};
 use gpui::{
     Entity, TestAppContext, UpdateGlobal,
-    http_client::{FakeHttpClient, Response},
 };
 use indoc::indoc;
 use language::{
@@ -3451,7 +3451,7 @@ async fn make_sweep_prompt_test_ep_store(
     });
 
     cx.update(|cx| {
-        cx.set_http_client(http_client.clone());
+        ::http_client::set_http_client(cx, http_client.clone());
     });
     let client =
         cx.update(|cx| Client::new(Arc::new(FakeSystemClock::new()), http_client.clone(), cx));
@@ -3525,7 +3525,7 @@ async fn test_unauthenticated_without_custom_url_blocks_prediction_impl(cx: &mut
         move |_req| {
             request_count.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
             async move {
-                Ok(gpui::http_client::Response::builder()
+                Ok(http_client::Response::builder()
                     .status(401)
                     .body("Unauthorized".into())
                     .unwrap())

@@ -42,7 +42,7 @@ fn main() {
 
         let http_client =
             ReqwestClient::user_agent("component_preview").expect("Failed to create HTTP client");
-        cx.set_http_client(Arc::new(http_client));
+        ::http_client::set_http_client(cx, Arc::new(http_client));
 
         let fs = Arc::new(RealFs::new(None, cx.background_executor().clone()));
         <dyn fs::Fs>::set_global(fs.clone(), cx);

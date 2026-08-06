@@ -4049,7 +4049,7 @@ async fn test_title_generation_failure_allows_retry(cx: &mut TestAppContext) {
     fake_summary_model.send_last_completion_stream_error(
         LanguageModelCompletionError::UpstreamProviderError {
             message: "Internal server error".to_string(),
-            status: gpui::http_client::StatusCode::INTERNAL_SERVER_ERROR,
+            status: http_client::StatusCode::INTERNAL_SERVER_ERROR,
             retry_after: None,
         },
     );
@@ -4912,7 +4912,7 @@ async fn setup(cx: &mut TestAppContext, model: TestModel) -> ThreadTest {
             TestModel::Sonnet4 => {
                 gpui_tokio::init(cx);
                 let http_client = ReqwestClient::user_agent("agent tests").unwrap();
-                cx.set_http_client(Arc::new(http_client));
+                ::http_client::set_http_client(cx, Arc::new(http_client));
                 let client = Client::production(cx);
                 let user_store = cx.new(|cx| UserStore::new(client.clone(), cx));
                 language_model::init(cx);
@@ -7457,7 +7457,7 @@ async fn test_fetch_tool_deny_rule_blocks_url(cx: &mut TestAppContext) {
         agent_settings::AgentSettings::override_global(settings, cx);
     });
 
-    let http_client = gpui::http_client::FakeHttpClient::with_200_response();
+    let http_client = http_client::FakeHttpClient::with_200_response();
 
     #[allow(clippy::arc_with_non_send_sync)]
     let tool = Arc::new(crate::FetchTool::new(http_client));
@@ -7501,7 +7501,7 @@ async fn test_fetch_tool_allow_rule_skips_confirmation(cx: &mut TestAppContext) 
         agent_settings::AgentSettings::override_global(settings, cx);
     });
 
-    let http_client = gpui::http_client::FakeHttpClient::with_200_response();
+    let http_client = http_client::FakeHttpClient::with_200_response();
 
     #[allow(clippy::arc_with_non_send_sync)]
     let tool = Arc::new(crate::FetchTool::new(http_client));
@@ -7542,7 +7542,7 @@ async fn test_fetch_tool_prompts_for_ungranted_host(cx: &mut TestAppContext) {
         agent_settings::AgentSettings::override_global(settings, cx);
     });
 
-    let http_client = gpui::http_client::FakeHttpClient::with_200_response();
+    let http_client = http_client::FakeHttpClient::with_200_response();
 
     #[allow(clippy::arc_with_non_send_sync)]
     let tool = Arc::new(crate::FetchTool::new(http_client));
@@ -7589,7 +7589,7 @@ async fn test_fetch_tool_granted_host_skips_prompt(cx: &mut TestAppContext) {
         agent_settings::AgentSettings::override_global(settings, cx);
     });
 
-    let http_client = gpui::http_client::FakeHttpClient::with_200_response();
+    let http_client = http_client::FakeHttpClient::with_200_response();
 
     #[allow(clippy::arc_with_non_send_sync)]
     let tool = Arc::new(crate::FetchTool::new(http_client));
@@ -7631,7 +7631,7 @@ async fn test_fetch_tool_refuses_loopback_without_unsandboxed(cx: &mut TestAppCo
         agent_settings::AgentSettings::override_global(settings, cx);
     });
 
-    let http_client = gpui::http_client::FakeHttpClient::with_200_response();
+    let http_client = http_client::FakeHttpClient::with_200_response();
 
     #[allow(clippy::arc_with_non_send_sync)]
     let tool = Arc::new(crate::FetchTool::new(http_client));
@@ -7673,7 +7673,7 @@ async fn test_fetch_tool_unsandboxed_lifts_restrictions(cx: &mut TestAppContext)
         agent_settings::AgentSettings::override_global(settings, cx);
     });
 
-    let http_client = gpui::http_client::FakeHttpClient::with_200_response();
+    let http_client = http_client::FakeHttpClient::with_200_response();
 
     #[allow(clippy::arc_with_non_send_sync)]
     let tool = Arc::new(crate::FetchTool::new(http_client));
@@ -7723,13 +7723,13 @@ async fn test_fetch_tool_refuses_redirect_to_loopback(cx: &mut TestAppContext) {
         agent_settings::AgentSettings::override_global(settings, cx);
     });
 
-    let http_client = gpui::http_client::FakeHttpClient::create(|req| async move {
+    let http_client = http_client::FakeHttpClient::create(|req| async move {
         let uri = req.uri().to_string();
         assert!(
             uri.contains("example.com"),
             "the loopback redirect target must never be requested, but saw {uri}"
         );
-        Ok(gpui::http_client::Response::builder()
+        Ok(http_client::Response::builder()
             .status(302)
             .header("location", "http://localhost:3000/internal")
             .body("".into())
@@ -7781,14 +7781,14 @@ async fn test_fetch_tool_reauthorizes_redirect_to_new_host(cx: &mut TestAppConte
         agent_settings::AgentSettings::override_global(settings, cx);
     });
 
-    let http_client = gpui::http_client::FakeHttpClient::create(|req| async move {
+    let http_client = http_client::FakeHttpClient::create(|req| async move {
         let uri = req.uri().to_string();
         assert!(
             uri.contains("example.com"),
             "the ungranted redirect target must not be requested before authorization, \
              but saw {uri}"
         );
-        Ok(gpui::http_client::Response::builder()
+        Ok(http_client::Response::builder()
             .status(302)
             .header("location", "https://redirect-target.example/landing")
             .body("".into())
@@ -7843,16 +7843,16 @@ async fn test_fetch_tool_follows_same_host_redirect(cx: &mut TestAppContext) {
         agent_settings::AgentSettings::override_global(settings, cx);
     });
 
-    let http_client = gpui::http_client::FakeHttpClient::create(|req| async move {
+    let http_client = http_client::FakeHttpClient::create(|req| async move {
         let uri = req.uri().to_string();
         if uri.ends_with("/start") {
-            Ok(gpui::http_client::Response::builder()
+            Ok(http_client::Response::builder()
                 .status(302)
                 .header("location", "https://example.com/final")
                 .body("".into())
                 .unwrap())
         } else if uri.ends_with("/final") {
-            Ok(gpui::http_client::Response::builder()
+            Ok(http_client::Response::builder()
                 .status(200)
                 .header("content-type", "text/plain")
                 .body("final content".into())

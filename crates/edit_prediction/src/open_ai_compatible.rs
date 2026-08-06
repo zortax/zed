@@ -1,7 +1,7 @@
 use anyhow::{Context as _, Result};
 use cloud_llm_client::predict_edits_v3::{RawCompletionRequest, RawCompletionResponse};
 use futures::AsyncReadExt as _;
-use gpui::{App, AppContext as _, Entity, Global, SharedString, Task, http_client};
+use gpui::{App, AppContext as _, Entity, Global, SharedString, Task};
 use language::language_settings::{OpenAiCompatibleEditPredictionSettings, all_language_settings};
 use language_model::{ApiKeyState, EnvVar, env_var};
 use std::sync::Arc;

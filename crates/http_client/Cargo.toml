@@ -39,6 +39,8 @@ serde_urlencoded.workspace = true
 url.workspace = true
 
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
+# For the global that carries Zed's client, now that gpui's own trait is too narrow to.
+gpui.workspace = true
 util = { workspace = true, optional = true }
 async-fs = { workspace = true, optional = true }
 async-tar = { workspace = true, optional = true }

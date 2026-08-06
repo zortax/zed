@@ -196,7 +196,7 @@ impl Asset for CommitAvatarAsset {
         source: Self::Source,
         cx: &mut App,
     ) -> impl Future<Output = Self::Output> + Send + 'static {
-        let client = cx.http_client();
+        let client = ::http_client::http_client(cx);
 
         async move {
             source

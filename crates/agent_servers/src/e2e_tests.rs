@@ -411,7 +411,7 @@ pub async fn init_test(cx: &mut TestAppContext) -> Arc<FakeFs> {
         cx.set_global(settings_store);
         gpui_tokio::init(cx);
         let http_client = reqwest_client::ReqwestClient::user_agent("agent tests").unwrap();
-        cx.set_http_client(Arc::new(http_client));
+        ::http_client::set_http_client(cx, Arc::new(http_client));
         let client = client::Client::production(cx);
         let user_store = cx.new(|cx| client::UserStore::new(client.clone(), cx));
         language_model::init(cx);

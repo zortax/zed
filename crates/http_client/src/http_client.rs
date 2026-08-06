@@ -1,11 +1,15 @@
 mod async_body;
 #[cfg(not(target_family = "wasm"))]
+mod gpui_bridge;
+#[cfg(not(target_family = "wasm"))]
 pub mod github;
 #[cfg(all(not(target_family = "wasm"), feature = "github-download"))]
 pub mod github_download;
 
 pub use anyhow::{Result, anyhow};
 pub use async_body::{AsyncBody, Inner, Json};
+#[cfg(not(target_family = "wasm"))]
+pub use gpui_bridge::{http_client, set_http_client, try_http_client};
 use derive_more::Deref;
 pub use http::{self, Method, Request, Response, StatusCode, Uri, request::Builder};
 use http::{HeaderName, HeaderValue};

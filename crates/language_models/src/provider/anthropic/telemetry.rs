@@ -71,7 +71,7 @@ pub struct AnthropicEventReporter {
 impl AnthropicEventReporter {
     pub fn new(model: &Arc<dyn LanguageModel>, cx: &gpui::App) -> Self {
         Self {
-            http_client: cx.http_client(),
+            http_client: ::http_client::http_client(cx),
             executor: cx.background_executor().clone(),
             api_key: model.api_key(cx),
             is_anthropic: model.provider_id() == ANTHROPIC_PROVIDER_ID,

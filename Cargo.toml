@@ -34,7 +34,6 @@ members = [
     "crates/codestral",
     "crates/collab",
     "crates/collab_ui",
-    "crates/collections",
     "crates/command_palette",
     "crates/command_palette_hooks",
     "crates/component",
@@ -89,17 +88,6 @@ members = [
     "crates/go_to_line",
     "crates/google_ai",
     "crates/grammars",
-    "crates/gpui",
-    "crates/gpui_shared_string",
-    "crates/gpui_linux",
-    "crates/gpui_macos",
-    "crates/gpui_macros",
-    "crates/gpui_platform",
-    "crates/gpui_tokio",
-    "crates/gpui_util",
-    "crates/gpui_web",
-    "crates/gpui_wgpu",
-    "crates/gpui_windows",
     "crates/html_to_markdown",
     "crates/http_client",
     "crates/http_client_tls",
@@ -133,7 +121,6 @@ members = [
     "crates/markdown",
     "crates/markdown_preview",
     "crates/mermaid_render",
-    "crates/media",
     "crates/menu",
     "crates/migrator",
     "crates/miniprofiler_ui",
@@ -167,8 +154,6 @@ members = [
     "crates/proto",
     "crates/proxy_handshake",
     "crates/recent_projects",
-    "crates/refineable",
-    "crates/refineable/derive_refineable",
     "crates/release_channel",
     "crates/remote",
     "crates/remote_connection",
@@ -178,7 +163,6 @@ members = [
     "crates/rope",
     "crates/rpc",
     "crates/sandbox",
-    "crates/scheduler",
     "crates/schema_generator",
     "crates/search",
     "crates/session",
@@ -188,6 +172,7 @@ members = [
     "crates/settings_macros",
     "crates/settings_profile_selector",
     "crates/settings_ui",
+    "crates/sum_tree",
     "crates/shell_command_parser",
     "crates/sidebar",
     "crates/snippet",
@@ -196,7 +181,6 @@ members = [
     "crates/sqlez",
     "crates/sqlez_macros",
     "crates/streaming_diff",
-    "crates/sum_tree",
     "crates/svg_preview",
     "crates/system_specs",
     "crates/syntax_theme",
@@ -302,7 +286,7 @@ cloud_api_types = { path = "crates/cloud_api_types" }
 cloud_llm_client = { path = "crates/cloud_llm_client" }
 collab = { path = "crates/collab" }
 collab_ui = { path = "crates/collab_ui" }
-collections = { path = "crates/collections", version = "0.1.0" }
+collections = { path = "../gpui-ce/crates/gpui_collections", package = "gpui_collections" }
 command_palette = { path = "crates/command_palette" }
 command_palette_hooks = { path = "crates/command_palette_hooks" }
 compliance = { path = "tooling/compliance" }
@@ -324,7 +308,7 @@ debug_adapter_extension = { path = "crates/debug_adapter_extension" }
 debugger_tools = { path = "crates/debugger_tools" }
 debugger_ui = { path = "crates/debugger_ui" }
 deepseek = { path = "crates/deepseek" }
-derive_refineable = { path = "crates/refineable/derive_refineable" }
+derive_refineable = { path = "../gpui-ce/crates/gpui_derive_refineable", package = "gpui_derive_refineable" }
 dev_container = { path = "crates/dev_container" }
 diagnostics = { path = "crates/diagnostics" }
 dialoguer = { version = "0.12", default-features = false }
@@ -350,17 +334,18 @@ git_ui = { path = "crates/git_ui" }
 go_to_line = { path = "crates/go_to_line" }
 google_ai = { path = "crates/google_ai" }
 grammars = { path = "crates/grammars" }
-gpui = { path = "crates/gpui", default-features = false }
-gpui_shared_string = { path = "crates/gpui_shared_string" }
-gpui_linux = { path = "crates/gpui_linux", default-features = false }
-gpui_macos = { path = "crates/gpui_macos", default-features = false }
-gpui_macros = { path = "crates/gpui_macros" }
-gpui_platform = { path = "crates/gpui_platform", default-features = false }
-gpui_web = { path = "crates/gpui_web" }
-gpui_wgpu = { path = "crates/gpui_wgpu" }
-gpui_windows = { path = "crates/gpui_windows", default-features = false }
-gpui_tokio = { path = "crates/gpui_tokio" }
-gpui_util = { path = "crates/gpui_util" }
+gpui = { path = "../gpui-ce/crates/gpui", default-features = false }
+gpui_shared_string = { path = "../gpui-ce/crates/gpui_shared_string" }
+gpui_linux = { path = "../gpui-ce/crates/gpui_linux", default-features = false }
+gpui_macos = { path = "../gpui-ce/crates/gpui_macos", default-features = false }
+gpui_macros = { path = "../gpui-ce/crates/gpui_macros" }
+gpui_platform = { path = "../gpui-ce/crates/gpui_platform", default-features = false }
+gpui_web = { path = "../gpui-ce/crates/gpui_web" }
+gpui_wgpu = { path = "../gpui-ce/crates/gpui_wgpu" }
+gpui_windows = { path = "../gpui-ce/crates/gpui_windows", default-features = false }
+gpui_tokio = { path = "../gpui-ce/crates/gpui_tokio" }
+gpui_zgui = { path = "../gpui-ce/crates/gpui_zgui" }
+gpui_util = { path = "../gpui-ce/crates/gpui_ce_util", package = "gpui_ce_util" }
 html_to_markdown = { path = "crates/html_to_markdown" }
 http_client = { path = "crates/http_client" }
 http_client_tls = { path = "crates/http_client_tls" }
@@ -398,7 +383,7 @@ markdown = { path = "crates/markdown" }
 markdown_preview = { path = "crates/markdown_preview" }
 mermaid_render = { path = "crates/mermaid_render" }
 svg_preview = { path = "crates/svg_preview" }
-media = { path = "crates/media" }
+media = { path = "../gpui-ce/crates/gpui_media", package = "gpui_media" }
 menu = { path = "crates/menu" }
 mime = "0.3.17"
 migrator = { path = "crates/migrator" }
@@ -433,7 +418,7 @@ prompt_store = { path = "crates/prompt_store" }
 proto = { path = "crates/proto" }
 proxy_handshake = { path = "crates/proxy_handshake" }
 recent_projects = { path = "crates/recent_projects" }
-refineable = { path = "crates/refineable" }
+refineable = { path = "../gpui-ce/crates/gpui_refineable", package = "gpui_refineable" }
 release_channel = { path = "crates/release_channel" }
 remote = { path = "crates/remote" }
 remote_connection = { path = "crates/remote_connection" }
@@ -443,7 +428,7 @@ reqwest_client = { path = "crates/reqwest_client" }
 rodio = { git = "https://github.com/RustAudio/rodio", rev = "e50e726ddd0292f6ef9de0dda6b90af4ed1fb66a", features = ["wav", "playback", "wav_output", "recording"] }
 rope = { path = "crates/rope" }
 rpc = { path = "crates/rpc" }
-scheduler = { path = "crates/scheduler" }
+scheduler = { path = "../gpui-ce/crates/gpui_scheduler", package = "gpui_scheduler" }
 sandbox = { path = "crates/sandbox" }
 search = { path = "crates/search" }
 session = { path = "crates/session" }
@@ -460,7 +445,7 @@ snippets_ui = { path = "crates/snippets_ui" }
 sqlez = { path = "crates/sqlez" }
 sqlez_macros = { path = "crates/sqlez_macros" }
 streaming_diff = { path = "crates/streaming_diff" }
-sum_tree = { path = "crates/sum_tree" }
+sum_tree = { path = "crates/sum_tree", version = "0.1.0" }
 codestral = { path = "crates/codestral" }
 system_specs = { path = "crates/system_specs" }
 syntax_theme = { path = "crates/syntax_theme" }
@@ -972,6 +957,11 @@ libwebrtc = { git = "https://github.com/zed-industries/livekit-rust-sdks", rev =
 notify = { git = "https://github.com/zed-industries/notify", rev = "0890bbb8ca40a4b5d1f67031698dd7918b37d991" }
 notify-types = { git = "https://github.com/zed-industries/notify", rev = "0890bbb8ca40a4b5d1f67031698dd7918b37d991" }
 webrtc-sys = { git = "https://github.com/zed-industries/livekit-rust-sdks", rev = "d0e27be0cdad89eadab3e36207cda0a2b6e359ee" }
+# gpui-ce depends on the published `zed-scap`, Zed on the git rev. Left alone they are two
+# distinct packages, so the `scap?/x11` feature gpui_linux enables lands on the published copy
+# while Zed's crates link the git one with neither backend enabled — which scap turns into a
+# `compile_error!`. Patching them together restores one package, and one feature set.
+zed-scap = { git = "https://github.com/zed-industries/scap", rev = "4afea48c3b002197176fb19cd0f9b180dd36eaac" }
 
 [profile.dev]
 split-debuginfo = "unpacked"
@@ -997,7 +987,7 @@ debug = "full"
 [profile.dev.package]
 # proc-macros start
 gpui_macros = { opt-level = 3 }
-derive_refineable = { opt-level = 3 }
+gpui_derive_refineable = { opt-level = 3 }
 feature_flags_macros = { opt-level = 3 }
 settings_macros = { opt-level = 3 }
 sqlez_macros = { opt-level = 3, codegen-units = 1 }
@@ -1021,7 +1011,7 @@ serde_json = { opt-level = 3 }
 activity_indicator = { codegen-units = 1 }
 assets = { codegen-units = 1 }
 breadcrumbs = { codegen-units = 1 }
-collections = { codegen-units = 1 }
+gpui_collections = { codegen-units = 1 }
 command_palette = { codegen-units = 1 }
 command_palette_hooks = { codegen-units = 1 }
 feature_flags = { codegen-units = 1 }
@@ -1040,7 +1030,7 @@ outline = { codegen-units = 1 }
 paths = { codegen-units = 1 }
 prettier = { codegen-units = 1 }
 project_symbols = { codegen-units = 1 }
-refineable = { codegen-units = 1 }
+gpui_refineable = { codegen-units = 1 }
 release_channel = { codegen-units = 1 }
 reqwest_client = { codegen-units = 1 }
 session = { codegen-units = 1 }
